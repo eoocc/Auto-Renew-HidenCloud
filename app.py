@@ -685,7 +685,7 @@ def renew_service(page):
 
 def main():
     # 检查必要环境变量
-    if not COOKIE_VALUE and not (EMAIL and PASSWORD):
+    if not EMAIL or PASSWORD:
         log("❌ 缺少登录凭证")
         sys.exit(1)
 
