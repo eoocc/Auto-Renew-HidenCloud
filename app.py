@@ -431,7 +431,7 @@ def login(page):
                 return True
             log("❌ Cookie 失效，请更换")
         except:
-            pass
+            log("❌ Cookie登录出错，切换到账号密码登录...")
 
     # 2. 账号密码登录
     if not EMAIL or not PASSWORD:
