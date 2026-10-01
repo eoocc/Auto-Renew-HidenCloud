@@ -423,17 +423,19 @@ def login(page):
                 'sameSite': 'Lax'
             }])
             page.goto(f"{BASE_URL}/dashboard", wait_until="domcontentloaded", timeout=60000)
-            solve_turnstile(page, timeout=90, success_check=page_ready, reload_after=8)
+            time.sleep(3)
             page_title = page.title()
             log(f"📝 当前Title: {page_title}")
             if "auth/login" not in page.url:
                 log(f"✅ Cookie 登录成功！当前已到达dashboard页面")
                 return True
-            log("⚠️ Cookie 失效，切换到账号密码登录...")
-        except Exception as e:
-            log(f"⚠️ Cookie 登录出现异常: 账号密码登录...")
+            log("❌ Cookie 失效，请更换")
+        except:
+            pass
 
     # 2. 账号密码登录
+    if not EMAIL or not PASSWORD:
+        return False
     log("💣 尝试账号密码登录...")
     try:
         page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60000)
