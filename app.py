@@ -434,9 +434,6 @@ def login(page):
             log(f"⚠️ Cookie 登录出现异常: 账号密码登录...")
 
     # 2. 账号密码登录
-    if not EMAIL or not PASSWORD:
-        log("❌ 未配置 EMAIL/PASSWORD，无法进行账号密码登录")
-        return False
     log("💣 尝试账号密码登录...")
     try:
         page.goto(LOGIN_URL, wait_until="domcontentloaded", timeout=60000)
