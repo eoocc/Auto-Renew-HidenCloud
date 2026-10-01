@@ -430,6 +430,7 @@ def login(page):
                 log(f"✅ Cookie 登录成功！当前已到达dashboard页面")
                 return True
             log("❌ Cookie 失效，请更换")
+            return False
         except:
             pass
 
