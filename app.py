@@ -423,18 +423,19 @@ def login(page):
                 'sameSite': 'Lax'
             }])
             page.goto(f"{BASE_URL}/dashboard", wait_until="domcontentloaded", timeout=60000)
-            time.sleep(3)
+            solve_turnstile(page, timeout=90, success_check=page_ready, reload_after=8)
             page_title = page.title()
             log(f"📝 当前Title: {page_title}")
             if "auth/login" not in page.url:
                 log(f"✅ Cookie 登录成功！当前已到达dashboard页面")
                 return True
-            log("❌ Cookie 失效，请更换")
-        except:
-            log("❌ Cookie登录出错，切换到账号密码登录...")
+            log("⚠️ Cookie 失效，切换到账号密码登录...")
+        except Exception as e:
+            log(f"⚠️ Cookie 登录出现异常: 账号密码登录...")
 
     # 2. 账号密码登录
     if not EMAIL or not PASSWORD:
+        log("❌ 未配置 EMAIL/PASSWORD，无法进行账号密码登录")
         return False
     log("💣 尝试账号密码登录...")
     try:
@@ -685,7 +686,9 @@ def renew_service(page):
 
 def main():
     # 检查必要环境变量
-    if not EMAIL or PASSWORD:
+    log(f"🔍 凭证检测: COOKIE_VALUE={'已配置' if COOKIE_VALUE else '未配置'}, "
+        f"EMAIL={'已配置' if EMAIL else '未配置'}, PASSWORD={'已配置' if PASSWORD else '未配置'}")
+    if not COOKIE_VALUE and not (EMAIL and PASSWORD):
         log("❌ 缺少登录凭证")
         sys.exit(1)
 
